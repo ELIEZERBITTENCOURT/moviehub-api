@@ -4,6 +4,9 @@ import com.moviehub.moviehub_api.domain.entity.User;
 import com.moviehub.moviehub_api.domain.enums.Role;
 import com.moviehub.moviehub_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Objects;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,15 +21,18 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        if (userRepository.count() == 0) {
-            User admin = User.builder()
-                    .nome("Administrador")
-                    .email("admin@moviehub.com")
-                    .senha(passwordEncoder.encode("admin123"))
-                    .role(Role.ADMIN)
-                    .build();
+        if (!userRepository.existsByEmail("admin@moviehub.com")) {
+
+            User admin = Objects.requireNonNull(
+                    User.builder()
+                            .nome("Administrador")
+                            .email("admin@moviehub.com")
+                            .senha(passwordEncoder.encode("admin123"))
+                            .role(Role.ADMIN)
+                            .build());
 
             userRepository.save(admin);
         }
     }
+
 }
