@@ -7,6 +7,9 @@ import com.moviehub.moviehub_api.dto.vote.VoteRequestDTO;
 import com.moviehub.moviehub_api.repository.MovieRepository;
 import com.moviehub.moviehub_api.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Objects;
+
 import org.springframework.stereotype.Service;
 import com.moviehub.moviehub_api.exception.BusinessException;
 import com.moviehub.moviehub_api.exception.NotFoundException;
@@ -20,19 +23,23 @@ public class VoteService {
 
     public void vote(User user, VoteRequestDTO dto) {
 
-        Movie movie = movieRepository.findById(dto.movieId())
+        Long movieId = Objects.requireNonNull(dto.movieId(), "movieId não pode ser null");
+
+        Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new NotFoundException("Filme não encontrado"));
 
-        voteRepository.findByUserAndMovie(user, movie)
-                .ifPresent(v -> {
-                    throw new BusinessException("Usuário já votou neste filme");
-                });
+        if (voteRepository.findByUserAndMovie(user, movie).isPresent()) {
+            throw new BusinessException("Usuário já votou neste filme");
+        }
 
-        Vote vote = Vote.builder()
+        Vote vote = Objects.requireNonNull(
+        Vote.builder()
                 .user(user)
                 .movie(movie)
                 .nota(dto.nota())
-                .build();
+                .build(),
+            "Vote não pode ser null"
+        );
 
         voteRepository.save(vote);
     }

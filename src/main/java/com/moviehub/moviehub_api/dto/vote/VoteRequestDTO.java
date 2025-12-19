@@ -5,9 +5,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public record VoteRequestDTO(
+        
+        @NotNull
+        Long movieId,
 
-        @NotNull Long movieId,
-
-        @Min(0) @Max(4)
+        @NotNull
+        @Min(0) 
+        @Max(4)
         Integer nota
 ) {}

@@ -22,13 +22,16 @@ public class Vote {
     private Long id;
 
     @Column(nullable = false)
+    @NonNull
     private Integer nota; // 0 a 4
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @NonNull
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
+    @NonNull
     private Movie movie;
 }
