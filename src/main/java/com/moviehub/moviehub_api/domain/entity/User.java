@@ -20,16 +20,20 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
+    @NonNull
     private String nome;
 
     @Column(nullable = false, unique = true)
+    @NonNull
     private String email;
 
     @Column(nullable = false)
+    @NonNull
     private String senha;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @NonNull
     private Role role;
 
     @OneToMany(mappedBy = "user")

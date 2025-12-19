@@ -7,6 +7,7 @@ import com.moviehub.moviehub_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +22,15 @@ public class UserService {
             throw new RuntimeException("Email já cadastrado");
         }
 
-        User user = User.builder()
-                .nome(dto.nome())
-                .email(dto.email())
-                .senha(passwordEncoder.encode(dto.senha()))
-                .role(dto.role())
-                .build();
+       User user = Objects.requireNonNull(
+            User.builder()
+                    .nome(dto.nome())
+                    .email(dto.email())
+                    .senha(passwordEncoder.encode(dto.senha()))
+                    .role(dto.role())
+                    .build(),
+            "User must not be null"
+        );
 
         userRepository.save(user);
 
