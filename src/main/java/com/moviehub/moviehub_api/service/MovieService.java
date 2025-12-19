@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.moviehub.moviehub_api.repository.specification.MovieSpecification.*;
 
@@ -22,15 +23,17 @@ public class MovieService {
 
     public MovieResponseDTO create(MovieCreateDTO dto) {
 
-        Movie movie = Movie.builder()
+        Movie movie = Objects.requireNonNull(
+                Movie.builder()
                 .nome(dto.nome())
                 .diretor(dto.diretor())
                 .genero(dto.genero())
                 .atores(dto.atores())
                 .ano(dto.ano())
                 .descricao(dto.descricao())
-                .build();
-
+                .build(),
+               "Movie must not be null"
+        );
         movieRepository.save(movie);
 
         return toResponse(movie);

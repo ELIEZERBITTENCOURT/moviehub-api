@@ -19,20 +19,26 @@ public class Movie {
     private Long id;
 
     @Column(nullable = false)
+    @NonNull
     private String nome;
 
     @Column(nullable = false)
+    @NonNull
     private String diretor;
 
     @Column(nullable = false)
+    @NonNull
     private String genero;
 
     @Column(nullable = false)
+    @NonNull
     private String atores;
 
+    @NonNull
     private Integer ano;
 
     @Column(length = 1000)
+    @NonNull
     private String descricao;
 
     @OneToMany(mappedBy = "movie")
